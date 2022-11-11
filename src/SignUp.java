@@ -7,44 +7,25 @@ public class SignUp {
     private String userName;
     private String password;
 
+    private Account account;
 
-    public SignUp(){}
-    public SignUp(String userName,String password){
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+
+    public SignUp() {
+    }
+
+    public SignUp(String userName, String password, Account account) {
         this.userName = userName;
         this.password = password;
+        this.account = account;
     }
-    public boolean signIn(ArrayList<SignUp> signUps){
-        System.out.print("Enter your userName : ");
-        userName = Start.input.next();
-        Start.input.nextLine();
-        System.out.print("Enter your password : ");
-        password = Start.input.nextLine();
-        int count = 0;
-        while (true){
-
-            Pattern pattern = Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9s])(?=.*[@#$%]).{8,20}$");
-            Matcher matcher = pattern.matcher(password);
-            if(matcher.matches()){
-//                        System.out.println(matcher.find());
-                return true;
-            }
-            else {
-//                        System.out.println(matcher.find());
-                System.out.println("\nPassword must contains at least 1 number,1 capital letter,1 small letter " +
-                        "and" + " 1 special character");
-                System.out.println(" Example: \"Password123@\"\n");
-                System.out.print("Enter Your Password : ");
-                password = Start.input.next();
-                Start.input.nextLine();
-                count++;
-                if(count == 6)
-                    return false;
-            }
-        }
-
-
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -60,21 +41,51 @@ public class SignUp {
     public void setPassword(String password) {
         this.password = password;
     }
-//    public String isValidUsername(String username,ArrayList<SignUp> signUps){
-//        boolean flag = true;
-//        for(SignUp signUp:signUps){
-//            if(signUp.getUserName().equals(userName)){
-//                System.out.println("UserName Already Exist, Try Another userName ");
-//                flag = false;
-//                System.out.print("UserName ");
-//                username = Start.input.nextLine();
-//                isValidUsername(username,signUps);
-//            }
-//        }
-//        if (flag){
-//            return username;
-//        }
-//        else
-//            return "";
-//    }
+
+    public boolean signIn(ArrayList<SignUp> signUps) {
+        account = new Account();
+        account.createAccount();
+        System.out.println("\n\t\t ****** Create UserName and Password ******\n\n");
+        boolean flag = true;
+        while (flag) {
+            System.out.print("Enter your userName : ");
+            userName = HomePage.input.next();
+            HomePage.input.nextLine();
+            flag = false;
+            for (SignUp signUp : signUps) {
+                if (signUp.getUserName().equals(userName)) {
+                    System.out.println("This UserName is Already Exist : \n");
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        System.out.print("Enter your password : ");
+        password = HomePage.input.nextLine();
+        int count = 0;
+        while (true) {
+
+            Pattern pattern = Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9s])(?=.*[@#$%]).{8,20}$");
+            Matcher matcher = pattern.matcher(password);
+            if (matcher.matches()) {
+
+                return true;
+            } else {
+
+                System.out.println("\nPassword must contains at least 1 number,1 capital letter,1 small letter " +
+                        "and" + " 1 special character");
+                System.out.println(" Example: \"Password123@\"\n");
+                System.out.print("Enter Your Password : ");
+                password = HomePage.input.next();
+                HomePage.input.nextLine();
+                count++;
+                if (count == 6)
+                    return false;
+            }
+        }
+
+
+    }
+
+
 }
